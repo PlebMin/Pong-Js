@@ -91,8 +91,6 @@ function moveBall() {
 
 
 function detectBoxCollision() {
-  //let ballLeft = ballXPos;
-  //let ballRight = ballXPos;
 
   if (ballXPos < cadreLeft || ballXPos > cadreRight) {
     clearInterval(partieId);
@@ -108,65 +106,87 @@ function init() {
 
     let joueur1 = document.getElementById('j1');
     let joueur2 = document.getElementById('j2');
+    remapKeys();
+    setInterval(keyboardControlGlobal, 50);
+    
+}
 
 
+function keyboardControlGlobal(){
+  let raquetteTop
+  let newRaquetteTop 
+  keyPressed.forEach(key => {
+    switch (key){
+      case 'Space':
+        if (partieId===undefined) {
+            istsarted = true;
+            start();
+        }
+        break;
+      case 'KeyQ':
+           raquetteTop = raquette1.offsetTop;
+           newRaquetteTop = raquetteTop - 50;
+          if (newRaquetteTop > cadreTop) {
+              raquette1.style.top = newRaquetteTop + 'px';
+              if(!istsarted){
+                ball.style.top = ball.offsetTop - 50 + 'px';
+                ballYPos = ballYPos -50;
+              }
+            }
+          break;
 
+      case 'KeyA':
+          raquetteTop = raquette1.offsetTop;
+          newRaquetteTop = raquetteTop + 50;
+          if (newRaquetteTop < cadreBottom - raquette1.offsetHeight /2 -5) {
+              raquette1.style.top = newRaquetteTop + 'px';
 
-    // document.addEventListener('keydown', function(event) {
-    //   if (event.code === 'Space' && partieId===undefined) {
-    //     istsarted = true;
-    //       document.getElementById("infos").style.display = "none"
-    //       start();
-      //Chaque utilisateur doit pouvoir commander individuellement sa raquette au clavier à l’aide de touches qui lui sont indiquées (exemple touches A/Q et P/L).
-         
-      function keyboardControlGlobal(){
-        keyPressed.forEach(key => {
-          switch (key){
-            case 'Space':
-                start();
-                gameState = 1;
-                break;
-            case 'KeyQ':
-                let raquetteTop = joueur1.offsetTop;
-                let newRaquetteTop = raquetteTop - 50;
-                if (newRaquetteTop > cadreTop) {
-                    joueur1.style.top = newRaquetteTop + 'px';
-                    if(!istsarted){
-                      ball.style.top = ball.offsetTop - 50 + 'px';
-                      ballYPos = ballYPos -50;
-                    }
-                break;
-      
-            case 'KeyA':
-                let raquetteTop = joueur1.offsetTop;
-                let newRaquetteTop = raquetteTop + 50;
-                if (newRaquetteTop < cadreBottom - joueur1.offsetHeight /2 -5) {
-                    joueur1.style.top = newRaquetteTop + 'px';
-      
-                  if(!istsarted){
-                    ball.style.top = ball.offsetTop + 50 + 'px';
-                    ballYPos = ballYPos +50;
-                  }
-                }
-                break;
-      
-            case 'KeyP':
-                let raquetteTop = joueur2.offsetTop;
-                let newRaquetteTop = raquetteTop - 50;
-                if (newRaquetteTop > cadreTop) {
-                    joueur2.style.top = newRaquetteTop + 'px';
-                }
-                break;
-            case 'KeyL':
-                let raquetteTop = joueur2.offsetTop;
-                let newRaquetteTop = raquetteTop + 50;
-                if (newRaquetteTop < cadreBottom - joueur2.offsetHeight /2 -5) {
-                    joueur2.style.top = newRaquetteTop + 'px';
-                }
-                break;
+            if(!istsarted){
+              ball.style.top = ball.offsetTop + 50 + 'px';
+              ballYPos = ballYPos +50;
+            }
           }
-        })
-      }
+          break;
+
+      case 'KeyP':
+           raquetteTop = raquette2.offsetTop;
+           newRaquetteTop = raquetteTop - 50;
+          if (newRaquetteTop > cadreTop) {
+              raquette2.style.top = newRaquetteTop + 'px';
+          }
+          break;
+      case 'KeyL':
+          raquetteTop = raquette2.offsetTop;
+          newRaquetteTop = raquetteTop + 50;
+          if (newRaquetteTop < cadreBottom - raquette2.offsetHeight /2 -5) {
+              raquette2.style.top = newRaquetteTop + 'px';
+          }
+          break;
+    }
+  })
+}
+
+function remapKeys(){
+  // Remap key press
+  document.onkeydown = e => {
+    if (keyPressed.includes(e.code)){ return; }
+    keyPressed.push(e.code) // Add to keypresses
+  }
+  // Remap key release
+  document.onkeyup = e => {
+    if (!keyPressed.includes(e.code)){ return; }
+    keyPressed.splice(keyPressed.indexOf(e.code), 1); // Remove key press
+  }
+  // If window out of focus, clear keys
+  window.onblur = () => {
+    keyPressed = [];
+  }
+
+}
+
+
+
+let keyPressed = []
 
 
 
@@ -208,76 +228,58 @@ function init() {
 
 
 
-let keyPressed = []
-
-function remapKeys(){
-  // Remap key press
-  document.onkeydown = e => {
-    if (keyPressed.includes(e.code)){ return; }
-    keyPressed.push(e.code) // Add to keypresses
-  }
-  // Remap key release
-  document.onkeyup = e => {
-    if (!keyPressed.includes(e.code)){ return; }
-    keyPressed.splice(keyPressed.indexOf(e.code), 1); // Remove key press
-  }
-  // If window out of focus, clear keys
-  window.onblur = () => {
-    keyPressed = [];
-  }
-
-}
 
 
 
-function keyboardControlGlobal(){
-	keyPressed.forEach(key => {
-		switch (key){
-			case 'Space':
-					start();
-					gameState = 1;
-          break;
-			case 'KeyQ':
-					let raquetteTop = joueur1.offsetTop;
-          let newRaquetteTop = raquetteTop - 50;
-          if (newRaquetteTop > cadreTop) {
-              joueur1.style.top = newRaquetteTop + 'px';
-              if(!istsarted){
-                ball.style.top = ball.offsetTop - 50 + 'px';
-                ballYPos = ballYPos -50;
-              }
-          break;
 
-			case 'KeyA':
-					let raquetteTop = joueur1.offsetTop;
-          let newRaquetteTop = raquetteTop + 50;
-          if (newRaquetteTop < cadreBottom - joueur1.offsetHeight /2 -5) {
-              joueur1.style.top = newRaquetteTop + 'px';
+// function keyboardControlGlobal(){
+// 	keyPressed.forEach(key => {
+// 		switch (key){
+// 			case 'Space':
+// 					start();
+// 					gameState = 1;
+//           break;
+// 			case 'KeyQ':
+// 					let raquetteTop = joueur1.offsetTop;
+//           let newRaquetteTop = raquetteTop - 50;
+//           if (newRaquetteTop > cadreTop) {
+//               joueur1.style.top = newRaquetteTop + 'px';
+//               if(!istsarted){
+//                 ball.style.top = ball.offsetTop - 50 + 'px';
+//                 ballYPos = ballYPos -50;
+//               }
+//           break;
 
-            if(!istsarted){
-              ball.style.top = ball.offsetTop + 50 + 'px';
-              ballYPos = ballYPos +50;
-            }
-          }
-          break;
+// 			case 'KeyA':
+// 					let raquetteTop = joueur1.offsetTop;
+//           let newRaquetteTop = raquetteTop + 50;
+//           if (newRaquetteTop < cadreBottom - joueur1.offsetHeight /2 -5) {
+//               joueur1.style.top = newRaquetteTop + 'px';
 
-      case 'KeyP':
-					let raquetteTop = joueur2.offsetTop;
-          let newRaquetteTop = raquetteTop - 50;
-          if (newRaquetteTop > cadreTop) {
-              joueur2.style.top = newRaquetteTop + 'px';
-          }
-          break;
-      case 'KeyL':
-					let raquetteTop = joueur2.offsetTop;
-          let newRaquetteTop = raquetteTop + 50;
-          if (newRaquetteTop < cadreBottom - joueur2.offsetHeight /2 -5) {
-              joueur2.style.top = newRaquetteTop + 'px';
-          }
-          break;
-		}
-	})
-}
+//             if(!istsarted){
+//               ball.style.top = ball.offsetTop + 50 + 'px';
+//               ballYPos = ballYPos +50;
+//             }
+//           }
+//           break;
+
+//       case 'KeyP':
+// 					let raquetteTop = joueur2.offsetTop;
+//           let newRaquetteTop = raquetteTop - 50;
+//           if (newRaquetteTop > cadreTop) {
+//               joueur2.style.top = newRaquetteTop + 'px';
+//           }
+//           break;
+//       case 'KeyL':
+// 					let raquetteTop = joueur2.offsetTop;
+//           let newRaquetteTop = raquetteTop + 50;
+//           if (newRaquetteTop < cadreBottom - joueur2.offsetHeight /2 -5) {
+//               joueur2.style.top = newRaquetteTop + 'px';
+//           }
+//           break;
+// 		}
+// 	})
+// }
 
 
 
@@ -288,4 +290,3 @@ function keyboardControlGlobal(){
 
 
 init();
-
