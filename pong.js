@@ -13,6 +13,7 @@ let raquetteHeight = raquette1.offsetHeight;
 let istsarted = false;
 let raquetteTop
 let newRaquetteTop 
+let moveballinter
 let keyPressed = [];
 
 // Propriété de la table
@@ -25,7 +26,7 @@ let cadreRight = document.getElementById('cadre').offsetWidth + border;
 let partieId;
 
 function start() {
-    setInterval(moveBall, 13);
+    moveballinter = setInterval(moveBall, 13);
 }
 
 
@@ -56,7 +57,7 @@ function moveBall() {
     ballYDir = Math.abs(ballYDir);
   }
 
-  if(newBallXPos > cadreRight - ballWidth + raquetteWidth){
+  if(newBallXPos > cadreRight){
     ballXPos = cadreRight - ballWidth + raquetteWidth;
     ballYPos += ballYDir;
     stopgame(0);
@@ -95,17 +96,20 @@ function init() {
 }
 
 function stopgame(x){
-  clearInterval(moveballinter)
-
-  let scoreJ1 = document.getElementsByClassName("scoreJ1");
-  let scoreJ2 = document.getElementsByClassName("scoreJ2");
+  clearInterval(moveballinter);
+  let scoreJ1 = document.querySelector(`.score.J1>p`);
+  let scoreJ2 = document.querySelector(`.score.J2>p`);
   if (!x){
-    scoreJ1.textContent = parsInt(scoreJ1.textContent)+1;
+    scoreJ1.textContent = parseInt(scoreJ1.textContent)+1;
   }
   else{
-    scoreJ2.textContent = parsInt(scoreJ2.textContent)+2;
+    scoreJ2.textContent = parseInt(scoreJ2.textContent)+1;
   }
   
+  if ((scoreJ1 < 5 && scoreJ2 < 5) || (Math.abs(scoreJ1-scoreJ2) < 2)){
+		moveballinter = setInterval(() => ballsticked(x), 13); // Set an interval to stick ball to a player
+		return;
+	}
 
   if (scoreJ1 > scoreJ2) {
     document.getElementById("infos").innerHTML = "GAME OVER1";
@@ -123,13 +127,14 @@ function stopgame(x){
 //0 right 1 left
 
 function ballsticked(x){
-  if (!x) {
-    ballXDir = -Math.abs(ballXDir);
-
-  }
-  else{ 
-    ballXDir = Math.abs(ballXDir);
-  }
+  if (!x){ // sticked to J2
+    ballXPos = raquette2.offsetLeft - ballWidth;
+	} 
+  
+  else { // sticked to J1
+    ballXPos = raquette1.offsetLeft + raquetteWidth;
+	} 
+	partieId = 0;
 }
 
 function keyboardControlGlobal(){
@@ -138,6 +143,7 @@ function keyboardControlGlobal(){
     switch (key){
       case 'Space':
         if (partieId===undefined) {
+            partieId = 1;
             istsarted = true;
             start();
         }
