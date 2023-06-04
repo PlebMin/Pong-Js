@@ -11,7 +11,9 @@ let raquette2 = document.getElementById('j2');
 let raquetteWidth = raquette1.offsetWidth;
 let raquetteHeight = raquette1.offsetHeight;
 let istsarted = false;
-
+let raquetteTop
+let newRaquetteTop 
+let keyPressed = [];
 
 // Propriété de la table
 let border = 5
@@ -23,7 +25,7 @@ let cadreRight = document.getElementById('cadre').offsetWidth + border;
 let partieId;
 
 function start() {
-    partieId = setInterval(moveBall, 13);
+    setInterval(moveBall, 13);
 }
 
 
@@ -74,7 +76,7 @@ function moveBall() {
   ball.style.top = ballYPos + 'px';
   ball.style.left = ballXPos + 'px';
 
-  detectCollision();
+  
 }
 
 
@@ -93,7 +95,7 @@ function init() {
 }
 
 function stopgame(x){
-  clearInterval(moveBall)
+  clearInterval(moveballinter)
 
   let scoreJ1 = document.getElementsByClassName("scoreJ1");
   let scoreJ2 = document.getElementsByClassName("scoreJ2");
@@ -103,21 +105,35 @@ function stopgame(x){
   else{
     scoreJ2.textContent = parsInt(scoreJ2.textContent)+2;
   }
-  [scoreJ1, scoreJ2] = [parseInt(scoreJ1.textContent),parseInt(scoreJ2.textContent)];
-  if ((scoreJ1 < 5 && scoreJ2 < 5)||(Math.abs(scoreJ1-scoreJ2) < 2)){
+  
+
+  if (scoreJ1 > scoreJ2) {
+    document.getElementById("infos").innerHTML = "GAME OVER1";
+    document.getElementById("infos").style.display = "block";
+    clearInterval(partieId);
+  }
     
+  else{
+    document.getElementById("infos").innerHTML = "GAME OVER2";
+    document.getElementById("infos").style.display = "block";
+    clearInterval(partieId);
   }
 
-  document.getElementById("infos").innerHTML = "GAME OVER";
-  document.getElementById("infos").style.display = "block";
 }
 //0 right 1 left
 
+function ballsticked(x){
+  if (!x) {
+    ballXDir = -Math.abs(ballXDir);
 
+  }
+  else{ 
+    ballXDir = Math.abs(ballXDir);
+  }
+}
 
 function keyboardControlGlobal(){
-  let raquetteTop
-  let newRaquetteTop 
+  
   keyPressed.forEach(key => {
     switch (key){
       case 'Space':
@@ -189,7 +205,7 @@ function remapKeys(){
 
 
 
-let keyPressed = []
+
 
 
 
