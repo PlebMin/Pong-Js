@@ -6,18 +6,21 @@
     <link rel="stylesheet" href="style.css" media="screen">
 </head>
 <body>
-    <div class="logo"><img src="assetes/Apple_Computer_Logo_rainbow.svg"></div>
+    <div class="logo" style="display:inline-block;vertical-align:bottom;">
+        <img src="assetes/Apple_Computer_Logo_rainbow.svg" alt="img"/>
+    </div>
+    <div class="titre"><p>Pong</p></div>
     <div id="cadre">
         <div id="j1" class="raquette"></div>
         <div id="j2" class="raquette"></div>
         <div id="ball"></div>
     </div>
     <div id="score">
-        <p>Joueur 1 :</p>
+        <div class="name1"></div><p>Joueur 1 :</p>
         <div class="score J1"><p>0</p></div>
         <div class="barre"><p>-</p></div>
         <div class="score J2"><p>0</p></div>
-        <p>Joueur 2 : </p>
+        <div class="name2"></div><p>Joueur 2 : </p>
     </div>
     <div id="infos">Press space to begin !</div>
 
