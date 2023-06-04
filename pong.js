@@ -26,7 +26,7 @@ let cadreRight = document.getElementById('cadre').offsetWidth + border;
 let partieId;
 
 function start() {
-    moveballinter = setInterval(moveBall, 13);
+    moveballinter = setInterval(moveBall, 5);
 }
 
 
@@ -106,7 +106,8 @@ function stopgame(x){
     scoreJ2.textContent = parseInt(scoreJ2.textContent)+1;
   }
   
-  if ((scoreJ1 < 5 && scoreJ2 < 5) || (Math.abs(scoreJ1-scoreJ2) < 2)){
+  if ((scoreJ1.textContent < 5 && scoreJ2.textContent < 5) || (Math.abs(scoreJ1.textContent-scoreJ2.textContent) < 2)){
+    
 		moveballinter = setInterval(() => ballsticked(x), 13); // Set an interval to stick ball to a player
 		return;
 	}
@@ -114,13 +115,13 @@ function stopgame(x){
   if (scoreJ1 > scoreJ2) {
     document.getElementById("infos").innerHTML = "GAME OVER1";
     document.getElementById("infos").style.display = "block";
-    clearInterval(partieId);
+    partieId = undefined;
   }
     
   else{
     document.getElementById("infos").innerHTML = "GAME OVER2";
     document.getElementById("infos").style.display = "block";
-    clearInterval(partieId);
+    partieId = undefined;
   }
 
 }
@@ -128,11 +129,13 @@ function stopgame(x){
 
 function ballsticked(x){
   if (!x){ // sticked to J2
-    ballXPos = raquette2.offsetLeft - ballWidth;
+    ball.style.top = raquette2.offsetTop +(raquetteWidth/2) +25 + "px";
+    ballXDir = -Math.abs(ballXDir);
 	} 
   
   else { // sticked to J1
-    ballXPos = raquette1.offsetLeft + raquetteWidth;
+    ball.style.top = raquette1.offsetTop + (raquetteWidth/2) +25 + "px";
+    ballXDir = Math.abs(ballXDir);
 	} 
 	partieId = 0;
 }
@@ -146,6 +149,12 @@ function keyboardControlGlobal(){
             partieId = 1;
             istsarted = true;
             start();
+            document.getElementById("infos").style.display = "none";
+        }
+        if(partieId === 0){
+          partieId = 1;
+          start();
+          document.getElementById("infos").style.display = "none";
         }
         break;
       case 'KeyQ':
