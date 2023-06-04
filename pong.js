@@ -26,28 +26,6 @@ function start() {
     partieId = setInterval(moveBall, 13);
 }
 
-function detectCollision() {
-  //let ballLeft = ballXPos;
-  //let ballRight = ballXPos + ballWidth;
-  //let ballTop = ballYPos;
-  //let ballBottom = ballYPos + ballHeight;
-  //let raquette1Left = raquette1.offsetLeft;
-  //let raquette1Right = raquette1.offsetLeft + raquetteWidth;
-  //let raquette1Top = raquette1.offsetTop;
-  //let raquette1Bottom = raquette1.offsetTop + raquetteHeight;
-  //let raquette2Left = raquette2.offsetLeft;
-  //let raquette2Right = raquette2.offsetLeft + raquetteWidth;
-  //let raquette2Top = raquette2.offsetTop;
-  //let raquette2Bottom = raquette2.offsetTop + raquetteHeight;
-
-
-  //if (
-  //  (ballRight >= raquette1Left && ballLeft <= raquette1Right && ballBottom >= raquette1Top && ballTop <= raquette1Bottom) ||
-  //  (ballRight >= raquette2Left && ballLeft <= raquette2Right && ballBottom >= raquette2Top && ballTop <= raquette2Bottom)) {
-  //  ballXDir *= -1;
-  //}
-}
-
 
 function moveBall() {
   let newBallXPos = ballXPos + ballXDir;
@@ -76,7 +54,19 @@ function moveBall() {
     ballYDir = Math.abs(ballYDir);
   }
 
+  if(newBallXPos > cadreRight - ballWidth + raquetteWidth){
+    ballXPos = cadreRight - ballWidth + raquetteWidth;
+    ballYPos += ballYDir;
+    stopgame(0);
+    return;
+  }
   
+  if(newBallXPos < cadreLeft){
+    ballXPos = cadreLeft;
+    ballYPos += ballYDir;
+    stopgame(1);
+    return;
+  }
 
   ballXPos += ballXDir;
   ballYPos += ballYDir;
@@ -84,20 +74,10 @@ function moveBall() {
   ball.style.top = ballYPos + 'px';
   ball.style.left = ballXPos + 'px';
 
-  detectBoxCollision();
   detectCollision();
 }
 
 
-
-function detectBoxCollision() {
-
-  if (ballXPos < cadreLeft || ballXPos > cadreRight) {
-    clearInterval(partieId);
-    document.getElementById("infos").innerHTML = "GAME OVER";
-    document.getElementById("infos").style.display = "block";
-  }
-}
 
 
 function init() {
@@ -106,10 +86,33 @@ function init() {
 
     let joueur1 = document.getElementById('j1');
     let joueur2 = document.getElementById('j2');
+
     remapKeys();
     setInterval(keyboardControlGlobal, 50);
     
 }
+
+function stopgame(x){
+  clearInterval(moveBall)
+
+  let scoreJ1 = document.getElementsByClassName("scoreJ1");
+  let scoreJ2 = document.getElementsByClassName("scoreJ2");
+  if (!x){
+    scoreJ1.textContent = parsInt(scoreJ1.textContent)+1;
+  }
+  else{
+    scoreJ2.textContent = parsInt(scoreJ2.textContent)+2;
+  }
+  [scoreJ1, scoreJ2] = [parseInt(scoreJ1.textContent),parseInt(scoreJ2.textContent)];
+  if ((scoreJ1 < 5 && scoreJ2 < 5)||(Math.abs(scoreJ1-scoreJ2) < 2)){
+    
+  }
+
+  document.getElementById("infos").innerHTML = "GAME OVER";
+  document.getElementById("infos").style.display = "block";
+}
+//0 right 1 left
+
 
 
 function keyboardControlGlobal(){
@@ -190,98 +193,7 @@ let keyPressed = []
 
 
 
-      // } else if (event.code === 'KeyQ') {
-      //     let raquetteTop = joueur1.offsetTop;
-      //     let newRaquetteTop = raquetteTop - 50;
-      //     if (newRaquetteTop > cadreTop) {
-      //         joueur1.style.top = newRaquetteTop + 'px';
-      //         if(!istsarted){
-      //           ball.style.top = ball.offsetTop - 50 + 'px';
-      //           ballYPos = ballYPos -50;
-      //         }
-      //     }
-      // } else if (event.code === 'KeyA') {
-      //     let raquetteTop = joueur1.offsetTop;
-      //     let newRaquetteTop = raquetteTop + 50;
-      //     if (newRaquetteTop < cadreBottom - joueur1.offsetHeight /2 -5) {
-      //         joueur1.style.top = newRaquetteTop + 'px';
-
-      //       if(!istsarted){
-      //         ball.style.top = ball.offsetTop + 50 + 'px';
-      //         ballYPos = ballYPos +50;
-      //       }
-      //     }
-      // } else if (event.code === 'KeyP') {
-      //     let raquetteTop = joueur2.offsetTop;
-      //     let newRaquetteTop = raquetteTop - 50;
-      //     if (newRaquetteTop > cadreTop) {
-      //         joueur2.style.top = newRaquetteTop + 'px';
-      //     }
-      // } else if (event.code === 'KeyL') {
-      //     let raquetteTop = joueur2.offsetTop;
-      //     let newRaquetteTop = raquetteTop + 50;
-      //     if (newRaquetteTop < cadreBottom - joueur2.offsetHeight /2 -5) {
-      //         joueur2.style.top = newRaquetteTop + 'px';
-      //     }
-       
-  
-
-
-
-
-
-
-
-// function keyboardControlGlobal(){
-// 	keyPressed.forEach(key => {
-// 		switch (key){
-// 			case 'Space':
-// 					start();
-// 					gameState = 1;
-//           break;
-// 			case 'KeyQ':
-// 					let raquetteTop = joueur1.offsetTop;
-//           let newRaquetteTop = raquetteTop - 50;
-//           if (newRaquetteTop > cadreTop) {
-//               joueur1.style.top = newRaquetteTop + 'px';
-//               if(!istsarted){
-//                 ball.style.top = ball.offsetTop - 50 + 'px';
-//                 ballYPos = ballYPos -50;
-//               }
-//           break;
-
-// 			case 'KeyA':
-// 					let raquetteTop = joueur1.offsetTop;
-//           let newRaquetteTop = raquetteTop + 50;
-//           if (newRaquetteTop < cadreBottom - joueur1.offsetHeight /2 -5) {
-//               joueur1.style.top = newRaquetteTop + 'px';
-
-//             if(!istsarted){
-//               ball.style.top = ball.offsetTop + 50 + 'px';
-//               ballYPos = ballYPos +50;
-//             }
-//           }
-//           break;
-
-//       case 'KeyP':
-// 					let raquetteTop = joueur2.offsetTop;
-//           let newRaquetteTop = raquetteTop - 50;
-//           if (newRaquetteTop > cadreTop) {
-//               joueur2.style.top = newRaquetteTop + 'px';
-//           }
-//           break;
-//       case 'KeyL':
-// 					let raquetteTop = joueur2.offsetTop;
-//           let newRaquetteTop = raquetteTop + 50;
-//           if (newRaquetteTop < cadreBottom - joueur2.offsetHeight /2 -5) {
-//               joueur2.style.top = newRaquetteTop + 'px';
-//           }
-//           break;
-// 		}
-// 	})
-// }
-
-
+    
 
 
 // 5 class pour couleur  suppre tt les couleur randint dans index list correspondant a la class pour couleur 
