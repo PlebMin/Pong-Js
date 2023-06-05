@@ -15,11 +15,12 @@ let raquetteTop
 let newRaquetteTop 
 let moveballinter
 let keyPressed = [];
+let logoHeight = document.getElementById("logo").offsetHeight;
 
 // Propriété de la table
 let border = 5
-let cadreTop= document.getElementById('cadre').offsetTop + border;
-let cadreBottom = document.getElementById('cadre').offsetHeight + border;
+let cadreTop= document.getElementById('cadre').offsetTop + border ;
+let cadreBottom = document.getElementById('cadre').offsetHeight + border ;
 let cadreLeft = document.getElementById('cadre').offsetLeft + border;
 let cadreRight = document.getElementById('cadre').offsetWidth + border;
 
@@ -50,7 +51,7 @@ function moveBall() {
     ballXDir = Math.abs(ballXDir);
   }
 
-  if (newBallYPos > cadreBottom) {
+  if (newBallYPos > cadreBottom + border + logoHeight) {
     ballYDir = -Math.abs(ballYDir);
   }
   if (newBallYPos < cadreTop) {
@@ -169,7 +170,7 @@ function keyboardControlGlobal(){
       case 'KeyA':
           raquetteTop = raquette1.offsetTop;
           newRaquetteTop = raquetteTop + 50;
-          if (newRaquetteTop < cadreBottom - raquette1.offsetHeight /2 -5) {
+          if (newRaquetteTop < logoHeight + cadreBottom - raquette1.offsetHeight /2 -5) {
               raquette1.style.top = newRaquetteTop + 'px';
 
             if(!istsarted){
@@ -189,7 +190,7 @@ function keyboardControlGlobal(){
       case 'KeyL':
           raquetteTop = raquette2.offsetTop;
           newRaquetteTop = raquetteTop + 50;
-          if (newRaquetteTop < cadreBottom - raquette2.offsetHeight /2 -5) {
+          if (newRaquetteTop < logoHeight +cadreBottom - raquette2.offsetHeight /2 -5) {
               raquette2.style.top = newRaquetteTop + 'px';
           }
           break;
