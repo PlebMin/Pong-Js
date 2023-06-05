@@ -25,10 +25,10 @@ let cadreRight = document.getElementById('cadre').offsetWidth + border;
 
 let partieId;
 
+
 function start() {
     moveballinter = setInterval(moveBall, 5);
 }
-
 
 function moveBall() {
   let newBallXPos = ballXPos + ballXDir;
@@ -80,9 +80,6 @@ function moveBall() {
   
 }
 
-
-
-
 function init() {
     ball.style.top = ballYPos + 'px';
     ball.style.left = ballXPos + 'px';
@@ -108,7 +105,7 @@ function stopgame(x){
   
   if ((scoreJ1.textContent < 5 && scoreJ2.textContent < 5) || (Math.abs(scoreJ1.textContent-scoreJ2.textContent) < 2)){
     
-		moveballinter = setInterval(() => ballsticked(x), 13); // Set an interval to stick ball to a player
+		moveballinter = setInterval(() => ballsticked(x), 13); // Set an interval to stick the ball to a player
 		return;
 	}
 
@@ -218,18 +215,6 @@ function remapKeys(){
 
 }
 
-
-
-
-
-
-
-    
-
-
 // 5 class pour couleur  suppre tt les couleur randint dans index list correspondant a la class pour couleur 
-
-
-
 
 init();
